@@ -15,9 +15,6 @@ const Generals = ({ match }) => (
       <Route path={`${match.url}/offline_places`} component={lazy(() => import(`./offline_places`))} />
       <Route path={`${match.url}/employees`} component={lazy(() => import(`./employees`))} />
       <Route path={`${match.url}/distribution`} component={lazy(() => import(`./distribution`))} />
-      {/* <Route path={`${match.url}/calendar`} component={lazy(() => import(`./calendar`))} /> */}
-      {/* <Route path={`${match.url}/project`} component={lazy(() => import(`./project`))} /> */}
-      {/* <Route path={`${match.url}/ecommerce`} component={lazy(() => import(`./e-commerce`))} /> */}
       <Redirect from={`${match.url}`} to={`${match.url}/dashboard`} />
     </Switch>
   </Suspense>
