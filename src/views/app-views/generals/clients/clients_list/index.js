@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, Table, Tag, Tooltip, message, Button } from 'antd';
-import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EyeOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import UserView from './UserView';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
@@ -12,14 +12,18 @@ export class UserList extends Component {
 	state = {
 		users: undefined,
 		userProfileVisible: false,
-		selectedUser: null
+		selectedUser: null,
+		loading: true
 	}
 
 	componentDidMount() {
 		let fetchUsers = async () => {
 			try {
 				let response = await GetUsersAPI()
-				this.state.users = response.data
+				this.setState({
+					users: response.data,
+					loading: false
+				})
 				console.log(response.data)
 			} catch(e) {
 				console.log(e)
@@ -60,7 +64,7 @@ export class UserList extends Component {
 				dataIndex: 'name',
 				render: (_, record) => (
 					<div className="d-flex">
-						<AvatarStatus src={record.img} name={record.name} subTitle={record.email}/>
+						<AvatarStatus src={record.img} icon={<UserOutlined />} name={record.name} subTitle={record.email}/>
 					</div>
 				),
 				sorter: {
@@ -72,28 +76,33 @@ export class UserList extends Component {
 				},
 			},
 			{
-				title: 'Role',
-				dataIndex: 'role',
+				title: 'Company',
+				dataIndex: 'company',
+				render: (value) => {
+					return value.name
+				},
 				sorter: {
-					compare: (a, b) => a.role.length - b.role.length,
+					compare: (a, b) => {
+						a = a.company.name.toLowerCase();
+  						b = b.company.name.toLowerCase();
+						return a > b ? -1 : b > a ? 1 : 0;
+					},
 				},
 			},
 			{
-				title: 'Last online',
-				dataIndex: 'lastOnline',
-				render: date => (
-					<span>{moment.unix(date).format("MM/DD/YYYY")} </span>
-				),
+				title: 'Phone number',
+				dataIndex: 'phone',
 				sorter: (a, b) => moment(a.lastOnline).unix() - moment(b.lastOnline).unix()
 			},
 			{
-				title: 'Status',
-				dataIndex: 'status',
-				render: status => (
-					<Tag className ="text-capitalize" color={status === 'active'? 'cyan' : 'red'}>{status}</Tag>
-				),
+				title: 'Email',
+				dataIndex: 'email',
 				sorter: {
-					compare: (a, b) => a.status.length - b.status.length,
+					compare: (a, b) => {
+						a = a.company.name.toLowerCase();
+  						b = b.company.name.toLowerCase();
+						return a > b ? -1 : b > a ? 1 : 0;
+					},
 				},
 			},
 			{
@@ -113,7 +122,7 @@ export class UserList extends Component {
 		];
 		return (
 			<Card bodyStyle={{'padding': '0px'}}>
-				<Table columns={tableColumns} dataSource={users} rowKey='id' />
+				<Table loading={this.state.loading} columns={tableColumns} dataSource={users} rowKey='id' />
 				<UserView data={selectedUser} visible={userProfileVisible} close={()=> {this.closeUserProfile()}}/>
 			</Card>
 		)

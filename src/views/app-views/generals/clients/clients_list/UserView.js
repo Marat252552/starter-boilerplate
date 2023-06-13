@@ -15,6 +15,9 @@ import {
 export class UserView extends Component {
 	render() {
 		const { data, visible, close} = this.props;
+		if(!data || !visible || !close) return <></>
+
+		let {city, suite, street, zipcode} = data.address
 		return (
 			<Drawer
 				width={300}
@@ -24,9 +27,9 @@ export class UserView extends Component {
 				visible={visible}
 			>
 				<div className="text-center mt-3">
-					<Avatar size={80} src={data?.img} />
+					<Avatar size={80} src={data?.img} icon={!data.img && <UserOutlined />}/>
 					<h3 className="mt-2 mb-0">{data?.name}</h3>
-					<span className="text-muted">{data?.personalInfo.title}</span>
+					<span className="text-muted">{data?.company.name}</span>
 				</div>
 				<Divider dashed />
 				<div className="">
@@ -37,14 +40,14 @@ export class UserView extends Component {
 					</p>
 					<p>
 						<CalendarOutlined />
-						<span className="ml-3 text-dark">Born in {data?.personalInfo.birthday}</span>
+						<span className="ml-3 text-dark">Username is {data?.username}</span>
 					</p>
 				</div>
 				<div className="mt-5">
 					<h6 className="text-muted text-uppercase mb-3">CONTACT</h6>
 					<p>
 						<MobileOutlined />
-						<span className="ml-3 text-dark">{data?.personalInfo.phoneNumber}</span>
+						<span className="ml-3 text-dark">{data?.phone}</span>
 					</p>
 					<p>
 						<MailOutlined />
@@ -52,26 +55,26 @@ export class UserView extends Component {
 					</p>
 					<p>
 						<CompassOutlined />
-						<span className="ml-3 text-dark">{data?.personalInfo.location}</span>
+						<span className="ml-3 text-dark">{`${city} ${suite} ${street} ${zipcode}`}</span>
 					</p>
 				</div>
 				<div className="mt-5">
 					<h6 className="text-muted text-uppercase mb-3">Social profiles</h6>
 					<p>
 						<FacebookOutlined />
-						<a href="/#" className="ml-3 text-dark">{data?.personalInfo.facebook? data?.personalInfo.facebook : '-'}</a>
+						<a href="/#" className="ml-3 text-dark">{data?.personalInfo?.facebook? data?.personalInfo.facebook : '-'}</a>
 					</p>
 					<p>
 						<TwitterOutlined />
-						<a href="/#" className="ml-3 text-dark">{data?.personalInfo.twitter? data?.personalInfo.twitter : '-'}</a>
+						<a href="/#" className="ml-3 text-dark">{data?.personalInfo?.twitter? data?.personalInfo.twitter : '-'}</a>
 					</p>
 					<p>
 						<InstagramOutlined />
-						<a href="/#" className="ml-3 text-dark">{data?.personalInfo.instagram? data?.personalInfo.instagram : '-'}</a>
+						<a href="/#" className="ml-3 text-dark">{data?.personalInfo?.instagram? data?.personalInfo.instagram : '-'}</a>
 					</p>
 					<p>
 						<GlobalOutlined />
-						<a href="/#" className="ml-3 text-dark">{data?.personalInfo.site? data?.personalInfo.site : '-'}</a>
+						<a href="/#" className="ml-3 text-dark">{data?.personalInfo?.site? data?.website : '-'}</a>
 					</p>
 				</div>
 			</Drawer>
