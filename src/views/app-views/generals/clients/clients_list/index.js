@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { Card, Table, Tag, Tooltip, message, Button } from 'antd';
-import { EyeOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
+import { EyeOutlined, DeleteOutlined, UserOutlined, EditOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import UserView from './UserView';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
 import userData from "assets/data/user-list.data.json";
 import { GetUsersAPI } from 'api/Intanse';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 export class UserList extends Component {
 
@@ -24,15 +25,14 @@ export class UserList extends Component {
 					users: response.data,
 					loading: false
 				})
-				console.log(response.data)
-			} catch(e) {
+			} catch (e) {
 				console.log(e)
 			}
 		}
 		fetchUsers()
 	}
 
-	
+
 
 	deleteUser = userId => {
 		this.setState({
@@ -47,12 +47,12 @@ export class UserList extends Component {
 			selectedUser: userInfo
 		});
 	};
-	
+
 	closeUserProfile = () => {
 		this.setState({
 			userProfileVisible: false,
 			selectedUser: null
-    });
+		});
 	}
 
 	render() {
@@ -64,13 +64,13 @@ export class UserList extends Component {
 				dataIndex: 'name',
 				render: (_, record) => (
 					<div className="d-flex">
-						<AvatarStatus src={record.img} icon={<UserOutlined />} name={record.name} subTitle={record.email}/>
+						<AvatarStatus src={record.img} icon={<UserOutlined />} name={record.name} subTitle={record.email} />
 					</div>
 				),
 				sorter: {
 					compare: (a, b) => {
 						a = a.name.toLowerCase();
-  						b = b.name.toLowerCase();
+						b = b.name.toLowerCase();
 						return a > b ? -1 : b > a ? 1 : 0;
 					},
 				},
@@ -84,7 +84,7 @@ export class UserList extends Component {
 				sorter: {
 					compare: (a, b) => {
 						a = a.company.name.toLowerCase();
-  						b = b.company.name.toLowerCase();
+						b = b.company.name.toLowerCase();
 						return a > b ? -1 : b > a ? 1 : 0;
 					},
 				},
@@ -100,7 +100,7 @@ export class UserList extends Component {
 				sorter: {
 					compare: (a, b) => {
 						a = a.company.name.toLowerCase();
-  						b = b.company.name.toLowerCase();
+						b = b.company.name.toLowerCase();
 						return a > b ? -1 : b > a ? 1 : 0;
 					},
 				},
@@ -111,19 +111,24 @@ export class UserList extends Component {
 				render: (_, elm) => (
 					<div className="text-right">
 						<Tooltip title="View">
-							<Button type="primary" className="mr-2" icon={<EyeOutlined />} onClick={() => {this.showUserProfile(elm)}} size="small"/>
+							<Button type="primary" className="mr-2" icon={<EyeOutlined />} onClick={() => { this.showUserProfile(elm) }} size="small" />
 						</Tooltip>
 						<Tooltip title="Delete">
-							<Button danger icon={<DeleteOutlined />} onClick={()=> {this.deleteUser(elm.id)}} size="small"/>
+							<Button danger icon={<DeleteOutlined />} onClick={() => { this.deleteUser(elm.id) }} size="small" />
+						</Tooltip>
+						<Tooltip title="Edit">
+							<Link to={`${this.props.match.url}/${elm.id}`}>
+								<Button icon={<EditOutlined />} size="small" />
+							</Link>
 						</Tooltip>
 					</div>
 				)
 			}
 		];
 		return (
-			<Card bodyStyle={{'padding': '0px'}}>
+			<Card bodyStyle={{ 'padding': '0px' }}>
 				<Table loading={this.state.loading} columns={tableColumns} dataSource={users} rowKey='id' />
-				<UserView data={selectedUser} visible={userProfileVisible} close={()=> {this.closeUserProfile()}}/>
+				<UserView data={selectedUser} visible={userProfileVisible} close={() => { this.closeUserProfile() }} />
 			</Card>
 		)
 	}

@@ -8,3 +8,7 @@ const Instanse = axios.create({
 export const GetUsersAPI = () => {
     return Instanse.get('/users')
 }
+
+export const GetUserAPI = (id) => {
+    return Instanse.get(`/users/${id}`)
+}
