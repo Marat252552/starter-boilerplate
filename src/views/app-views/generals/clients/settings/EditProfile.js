@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Avatar, Button, Input, DatePicker, Row, Col, message, Upload } from 'antd';
+import { Form, Avatar, Button, Input, Row, Col, message, Upload } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { ROW_GUTTER } from 'constants/ThemeConstant';
 import Flex from 'components/shared-components/Flex'
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { GetUserAPI } from 'api/Intanse';
 import Loading from 'components/shared-components/Loading';
 
@@ -27,6 +26,9 @@ export class EditProfile extends Component {
 
 	componentDidMount() {
 		this.fetchUser()
+	}
+	goBack() {
+		this.props.history.goBack()
 	}
 	async fetchUser() {
 		try {
@@ -70,6 +72,7 @@ export class EditProfile extends Component {
 					postcode: values.postcode,
 				})
 				message.success({ content: 'Done!', key, duration: 2 });
+				this.goBack()
 			}, 1000);
 		};
 

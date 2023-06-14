@@ -46,8 +46,8 @@ const SettingContent = ({ match }) => {
 
 	let {id} = match.params
 
-	let EditProfileContainer = () => {
-		return <EditProfile id={id}/>
+	let EditProfileContainer = (props) => {
+		return <EditProfile {...props} id={id}/>
 	}
 
 	return (
